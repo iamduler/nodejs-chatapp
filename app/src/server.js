@@ -3,6 +3,7 @@ const path = require('path');
 const http = require('http');
 const socketio = require('socket.io');
 const Filter = require('bad-words'); // 3.0.4
+const { createMessage } = require('./utils/create-message');
 
 const app = express();
 
@@ -19,7 +20,7 @@ io.on("connection", (socket) => {
 
     // Using broadcast
     // Send message to others
-    socket.broadcast.emit("Server send message", 'New member just joined with us!');
+    socket.broadcast.emit("Server send message", createMessage('New member just joined with us!'));
 
     // Disconnect
     socket.on('disconnect', () => {
@@ -34,7 +35,7 @@ io.on("connection", (socket) => {
             return;
         }
 
-        io.emit("Server send message", message);
+        io.emit("Server send message", createMessage(message));
         callback();
     })
 
