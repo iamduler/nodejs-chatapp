@@ -16,3 +16,22 @@ document.getElementById('chat-form').addEventListener('submit', (e) => {
 socket.on('Server send message', (message) => {
     console.log(message);
 })
+
+// Send location
+document.getElementById('send-location-btn').addEventListener('click', (e) => {
+    if (!navigator.geolocation) {
+        return alert('Browser not support location');
+    }
+
+    navigator.geolocation.getCurrentPosition((position) => {
+        console.log('Position:', position);
+        const { latitude, longitude } = position.coords;
+
+        socket.emit('Client send location', { latitude, longitude });
+    });
+})
+
+// Listen event server send location
+socket.on('Server send location', (locationUrl) => {
+    console.log(locationUrl);  
+})

@@ -24,7 +24,6 @@ io.on("connection", (socket) => {
     // Disconnect
     socket.on('disconnect', () => {
         // Khi client đóng tab/ đóng trình duyệt
-        console.log('Client left server.');
     })
 
     socket.on('Client send message', (message, callback) => {
@@ -37,7 +36,12 @@ io.on("connection", (socket) => {
 
         io.emit("Server send message", message);
         callback();
+    })
 
+    // Listen event send location
+    socket.on('Client send location', ({ latitude, longitude }) => {
+        const locationUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+        io.emit('Server send location', locationUrl);
     })
 })
 
