@@ -6,30 +6,13 @@
     <title>Chat</title>
 </head>
 <body>
-    <h1>HELLO WORLD</h1>
-    <div>Count: <span id="count-value"></span></div>
-    <button id="increment-btn">
-        +1
-    </button>
+    <h1>Chat app</h1>
+    <form id="chat-form">
+        <input type="text" id="input-message">
+        <button type="submit">Send</button>
+    </form>
 
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-        // Yêu cầu server kết nối với client
-        const socket = io();
-
-        // Nhận lại event từ server gửi về client
-        socket.on('Send count from server to client', (count) => {
-            document.getElementById('count-value').innerHTML = count;
-        })
-        
-        socket.on('Send message from server to client', (message) => {
-            console.log('Received message: ', message);
-        })
-
-        document.getElementById('increment-btn').addEventListener('click', () => {
-            // Gửi sự kiện từ client lên server
-            socket.emit('Send increment from client to server');
-        })
-    </script>
+    <script src="./js/client-chat.js"></script>
 </body>
 </html>
