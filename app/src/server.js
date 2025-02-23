@@ -22,7 +22,6 @@ io.on("connection", (socket) => {
     // Truyền giá trị count từ server -> client
     // emit() giúp gửi dữ liệu theo sự kiện từ server -> client
     socket.emit('Send count from server to client', count);
-
     socket.emit('Send message from server to client', message);
 
     // Disconnection
@@ -34,7 +33,7 @@ io.on("connection", (socket) => {
     // Nhận sự kiện từ client
     socket.on('Send increment from client to server', () => {
         count++;
-        socket.emit('Send count from server to client', count);
+        io.emit('Send count from server to client', count); // Using io to send event to all socket
     });
 })
 

@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1>HELLO WORLD</h1>
+    <div>Count: <span id="count-value"></span></div>
     <button id="increment-btn">
         +1
     </button>
@@ -18,7 +19,7 @@
 
         // Nhận lại event từ server gửi về client
         socket.on('Send count from server to client', (count) => {
-            console.log('Received count: ', count);
+            document.getElementById('count-value').innerHTML = count;
         })
         
         socket.on('Send message from server to client', (message) => {
