@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat</title>
+    <title>Room chat</title>
 </head>
 <body>
-    <h1>Chat app</h1>
-    <form id="chat-form">
-        <input type="text" id="input-message">
-        <button type="submit">Send</button>
-        <button id="send-location-btn">Send location</button>
+    <form action="./chat.html">
+        <h1>Room chat</h1>
+        <input type="text" name="room" id="room" placeholder="room">
+        <input type="text" name="username" id="username" placeholder="username">
+        <button type="submit">Join</button>
     </form>
-
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="./js/client-chat.js"></script>
 </body>
 </html>

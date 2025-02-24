@@ -35,3 +35,10 @@ document.getElementById('send-location-btn').addEventListener('click', (e) => {
 socket.on('Server send location', (locationUrl) => {
     console.log(locationUrl);  
 })
+
+// Process query string
+const queryString = location.search;
+const params = Qs.parse(location.search, { ignoreQueryPrefix: true });
+
+const { room, username } = params;
+socket.emit('Join room client event', { room, username });
