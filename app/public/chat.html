@@ -25,18 +25,18 @@
     <main class="row app">
       <section class="col-md-3 col-sm-4 app__left">
         <h1 class="text-center">
-          <span class="app__title">Chat app</span>
+          <span class="app__title" id="room-name">Chat app</span>
         </h1>
         <div class="app__title--line"></div>
         <div class="app__list-user">
-          <ul class="app__list-user--content">
-            <li class="app__item-user">Cras justo odio</li>
+          <ul class="app__list-user--content" id="user-list-container">
+            <!-- <li class="app__item-user">Cras justo odio</li> -->
           </ul>
         </div>
       </section>
 
       <section class="col-md-9 col-sm-8 app__right">
-        <div class="app__messages">
+        <div class="app__messages" id="message-container">
           <!-- <div class="message-item">
             <div class="message__row1">
               <p class="message__name">Nguyễn Phong Hào</p>
@@ -50,8 +50,7 @@
           </div> -->
         </div>
         <div class="app__send-messages">
-          <form id="send-location-btn" class="form-messages">
-
+          <form id="chat-form" class="form-messages">
             <div class="input-group h-100">
               <div class="input-messages__wrapper">
                 <input type="text" id="input-message" class="input-messages" />
@@ -103,25 +102,3 @@
     <script src="/js/client-chat.js"></script>
   </body>
 </html>
-
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat</title>
-</head>
-<body>
-    <h1>Chat app</h1>
-    <form id="chat-form">
-        <input type="text" id="input-message">
-        <button type="submit">Send</button>
-        <button id="send-location-btn">Send location</button>
-    </form>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.13.1/qs.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="./js/client-chat.js"></script>
-</body>
-</html> -->

@@ -18,9 +18,19 @@ const io = socketio(server); // Init socketIO with server
 io.on("connection", (socket) => {
     socket.on('Join room client event', ({ room, username }) => {
         socket.join(room); // to subscribe the socket to a given channel
+        
+        // Process user list
+        let newUser = {
+            id: socket.id,
+            username,
+            room,
+        };
+
+        addUser(newUser);
+        io.to(room).emit('Send user list from server to client', getUserList(room));
 
         // Send message to the newest client
-        socket.emit("Server send message", `Hi ${username}, welcome to the ${room} room!`);
+        socket.emit("Server send message", createMessage(`Hi ${username}, welcome to the ${room} room!`));
 
         // Using broadcast to Send message to others
         socket.broadcast.to(room).emit("Server send message", createMessage(`${username} just joined room ${room}!`));
@@ -28,13 +38,15 @@ io.on("connection", (socket) => {
         // Listen event send message
         socket.on('Client send message', (message, callback) => {
             const filter = new Filter();
+            const id = socket.id;
+            const user = getUserById(id);
     
             if (filter.isProfane(message)) {
                 callback("Invalid message content.");
                 return;
             }
     
-            io.to(room).emit("Server send message", createMessage(message));
+            io.to(room).emit("Server send message", createMessage(message, user));
             callback();
         })
         
@@ -44,23 +56,13 @@ io.on("connection", (socket) => {
             io.to(room).emit('Server send location', locationUrl);
         })
 
-        // Process user list
-        const newUser = {
-            id: socket.id,
-            username,
-            room,
-        };
-
-        addUser(newUser);
-
-        io.to(room).emit('Send user list from server to client', getUserList(room));
-
         // Disconnect
         socket.on('disconnect', () => {
             // Khi client đóng tab/ đóng trình duyệt
             const leftUser = getUserById(socket.id);
             removeUser(socket.id);
-            io.to(room).emit('User left room from server to client', leftUser, getUserList(leftUser.room));
+            io.to(leftUser.room).emit('User left room from server to client', getUserList(leftUser.room));
+            io.to(leftUser.room).emit('Server send message', createMessage(`User ${leftUser.username} just left the room!`));
         })
     });
 

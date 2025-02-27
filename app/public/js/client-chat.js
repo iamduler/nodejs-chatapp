@@ -14,7 +14,24 @@ document.getElementById('chat-form').addEventListener('submit', (e) => {
 })
 
 socket.on('Server send message', (message) => {
-    console.log(message);
+    let messageContainer = document.getElementById('message-container');
+    let messageHtml = messageContainer.innerHTML + `
+        <div class="message-item">
+            <div class="message__row1">
+                <p class="message__name">${message.username}</p>
+                <p class="message__date">${message.createAt}</p>
+            </div>
+            <div class="message__row2">
+                <p class="message__content">
+                ${message.text}
+                </p>
+            </div>
+        </div>
+    `;
+
+    messageContainer.innerHTML = messageHtml;
+
+    document.getElementById('input-message').value = '';
 })
 
 // Send location
@@ -43,12 +60,24 @@ const params = Qs.parse(location.search, { ignoreQueryPrefix: true });
 const { room, username } = params;
 socket.emit('Join room client event', { room, username });
 
+// Display room name
+document.getElementById('room-name').innerHTML = room;
+
+// Render user list
+const renderUserList = (userList) => {
+    let contentHtml = '';
+    userList.map((user) => {
+        contentHtml += `<li class="app__item-user">${user.username}</li>`;
+    });
+
+    document.getElementById('user-list-container').innerHTML = contentHtml;
+}
+
 // Process user list
 socket.on('Send user list from server to client', (userList) => {
-    console.log(userList);
+    renderUserList(userList);
 })
 
-socket.on('User left room from server to client', (user, userList) => {
-    console.log(userList);
-    console.log(`User ${user.username} just left the room!`);
+socket.on('User left room from server to client', (userList) => {
+    renderUserList(userList);
 })
