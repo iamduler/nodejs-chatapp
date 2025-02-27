@@ -42,3 +42,13 @@ const params = Qs.parse(location.search, { ignoreQueryPrefix: true });
 
 const { room, username } = params;
 socket.emit('Join room client event', { room, username });
+
+// Process user list
+socket.on('Send user list from server to client', (userList) => {
+    console.log(userList);
+})
+
+socket.on('User left room from server to client', (user, userList) => {
+    console.log(userList);
+    console.log(`User ${user.username} just left the room!`);
+})
