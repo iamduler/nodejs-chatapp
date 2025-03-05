@@ -4,7 +4,8 @@ const createMessage = (text, user = '') => {
     let message = {
         text,
         createAt: formatTime('dd-MM-yyyy hh:mm:ss', new Date()),
-        username: 'System'
+        username: 'System',
+        id: user.id
     }
 
     if (user) {

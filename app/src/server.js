@@ -38,8 +38,7 @@ io.on("connection", (socket) => {
         // Listen event send message
         socket.on('Client send message', (message, callback) => {
             const filter = new Filter();
-            const id = socket.id;
-            const user = getUserById(id);
+            const user = getUserById(socket.id);
     
             if (filter.isProfane(message)) {
                 callback("Invalid message content.");
@@ -53,7 +52,8 @@ io.on("connection", (socket) => {
         // Listen event send location
         socket.on('Client send location', ({ latitude, longitude }) => {
             const locationUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
-            io.to(room).emit('Server send location', locationUrl);
+            const user = getUserById(socket.id);
+            io.to(room).emit('Server send location', createMessage(locationUrl, user));
         })
 
         // Disconnect

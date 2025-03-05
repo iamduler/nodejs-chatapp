@@ -15,22 +15,7 @@ document.getElementById('chat-form').addEventListener('submit', (e) => {
 
 socket.on('Server send message', (message) => {
     let messageContainer = document.getElementById('message-container');
-    let messageHtml = messageContainer.innerHTML + `
-        <div class="message-item">
-            <div class="message__row1">
-                <p class="message__name">${message.username}</p>
-                <p class="message__date">${message.createAt}</p>
-            </div>
-            <div class="message__row2">
-                <p class="message__content">
-                ${message.text}
-                </p>
-            </div>
-        </div>
-    `;
-
-    messageContainer.innerHTML = messageHtml;
-
+    messageContainer.innerHTML = processMessageHtml(message, 'text', socket.id);
     document.getElementById('input-message').value = '';
 })
 
@@ -49,8 +34,10 @@ document.getElementById('send-location-btn').addEventListener('click', (e) => {
 })
 
 // Listen event server send location
-socket.on('Server send location', (locationUrl) => {
-    console.log(locationUrl);  
+socket.on('Server send location', (message) => {
+    let messageContainer = document.getElementById('message-container');
+    messageContainer.innerHTML = processMessageHtml(message, 'link', socket.id);
+    document.getElementById('input-message').value = '';
 })
 
 // Process query string
@@ -81,3 +68,41 @@ socket.on('Send user list from server to client', (userList) => {
 socket.on('User left room from server to client', (userList) => {
     renderUserList(userList);
 })
+
+const processMessageHtml = (message, type, currentSocketId) => {
+    let messageContainer = document.getElementById('message-container');
+    let messageClass = currentSocketId === message.id ? 'currentUser' : '';
+
+    if (type == 'text') {
+        var messageHtml = messageContainer.innerHTML + `
+            <div class="message-item ${messageClass}">
+                <div class="message__row1">
+                    <p class="message__name">${message.username}</p>
+                    <p class="message__date">${message.createAt}</p>
+                </div>
+                <div class="message__row2">
+                    <p class="message__content">
+                    ${message.text}
+                    </p>
+                </div>
+            </div>
+        `;
+    }
+    else if (type == 'link') {
+        var messageHtml = messageContainer.innerHTML + `
+            <div class="message-item">
+                <div class="message__row1">
+                    <p class="message__name">${message.username}</p>
+                    <p class="message__date">${message.createAt}</p>
+                </div>
+                <div class="message__row2">
+                    <a target="_blank" class="message__content" href="${message.text}">
+                        ${message.username} chia sẻ vị trí
+                    </a>
+                </div>
+            </div>
+        `;
+    }
+
+    return messageHtml;
+}

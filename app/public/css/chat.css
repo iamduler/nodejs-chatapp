@@ -105,3 +105,11 @@
   width: 100px;
   font-size: 18px;
 }
+
+.currentUser {
+  text-align: end;
+}
+
+.currentUser .message__row1 {
+  display: inline-flex;
+}
